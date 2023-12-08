@@ -1,6 +1,8 @@
-﻿using System;
-using System.Web;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace app.Controllers
 {
@@ -10,8 +12,18 @@ namespace app.Controllers
         [HttpGet]
         public string Get()
         {
-	    var host = Environment.GetEnvironmentVariable ("COMPUTERNAME");
-            return "I am " + host;
+            StringBuilder sb = new StringBuilder();
+
+            var host = Environment.GetEnvironmentVariable("COMPUTERNAME");
+            sb.AppendLine("I am " + host);
+
+            foreach (KeyValuePair<string, StringValues> pair in Request.Headers)
+            {
+                sb.Append(pair.Key);
+                sb.Append(" : ");
+                sb.AppendLine($"{pair.Value}");
+            }
+            return  sb.ToString();
         }
     }
 }
