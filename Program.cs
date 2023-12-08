@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace app
+
+WebApplicationOptions webApplicationOptions = new()
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+    Args = args,
+  //  EnvironmentName = environmentName
+};
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-    }
-}
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(webApplicationOptions);
+builder.Services.AddMvc();
+
+var app = builder.Build();
+
+app.UseRouting();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=WhoAmI}/{action=Get}/{id?}");
+app.Run();
