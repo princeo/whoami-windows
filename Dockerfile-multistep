@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0.0-nanoserver AS builder
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS builder
 ENV ASPNETCORE_URLS http://+:5000
 RUN mkdir /app
 WORKDIR /app
@@ -7,7 +7,7 @@ RUN dotnet restore
 COPY . .
 RUN dotnet publish --output /app/ --configuration Release
 
-FROM microsoft/aspnetcore:2.0.0-nanoserver
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=builder /app .
 EXPOSE 5000

@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0.0-nanoserver
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 ENV ASPNETCORE_URLS http://+:5000
 RUN mkdir /app
 WORKDIR /app
